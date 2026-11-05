@@ -1,0 +1,9 @@
+{
+  "name": "Feynman Voice Tutor",
+  "short_name": "Fey",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f1419",
+  "theme_color": "#e8590c",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

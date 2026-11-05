@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f1720">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="description" content="A voice-first Feynman-technique tutor: explain a concept out loud and watch a stickman act out your idea.">
+<title>Feynman Voice Tutor</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app" data-state="setup">
+  <header class="topbar">
+    <div class="brand"><span class="logo" aria-hidden="true">✦</span><span>Fey</span><span class="topic-pill" id="topicPill"></span></div>
+    <button class="meter" id="meterBtn" aria-label="Open understanding panel">
+      <svg viewBox="0 0 36 36" aria-hidden="true"><circle class="meter-bg" cx="18" cy="18" r="15.5"/><circle class="meter-fg" id="meterArc" cx="18" cy="18" r="15.5" stroke-dasharray="0 100"/></svg>
+      <span id="meterVal">0</span>
+    </button>
+  </header>
+
+  <main class="layout">
+    <section class="stage-card" aria-label="Stickman stage">
+      <div class="stage-top">
+        <span class="mood" id="mood" data-mood="neutral">Ready</span>
+        <button class="icon-btn" id="replayBtn" aria-label="Replay animation" title="Replay">↻</button>
+      </div>
+      <svg id="stage" role="img" aria-label="Stickman acting out the idea"></svg>
+      <p class="caption" id="caption">&nbsp;</p>
+    </section>
+
+    <section class="talk" aria-live="polite">
+      <div class="tutor-line" id="tutorLine"><span class="who">Fey</span><span id="tutorText">Pick a topic to start.</span></div>
+      <div class="chips" id="chips" aria-label="Words the stickman reacted to"></div>
+      <div class="log" id="log"></div>
+      <div class="live" id="live"><span class="who">You</span><span id="liveText" class="live-text"></span></div>
+    </section>
+
+    <aside class="insights" id="insights" aria-label="Understanding">
+      <div class="sheet-handle" id="sheetHandle"></div>
+      <h2>Understanding</h2>
+      <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+      <ol class="steps" id="steps">
+        <li data-phase="explain">Explain</li><li data-phase="probe">Probe</li><li data-phase="predict">Predict</li>
+        <li data-phase="repair">Repair</li><li data-phase="simplify">Simplify</li><li data-phase="wrap">Wrap</li>
+      </ol>
+      <h3>Misconceptions</h3>
+      <ul class="miscon" id="miscon"><li class="empty">None spotted yet.</li></ul>
+      <h3>Got it</h3>
+      <ul class="mastered" id="mastered"><li class="empty">Nothing yet. Keep explaining!</li></ul>
+      <h3>Still to explore</h3>
+      <ul class="gaps" id="gaps"><li class="empty">—</li></ul>
+      <p class="note" id="note"></p>
+    </aside>
+  </main>
+
+  <footer class="controls">
+    <button class="side-btn" id="keyboardBtn" aria-label="Type instead">⌨</button>
+    <button class="mic" id="micBtn" aria-label="Microphone">
+      <span class="ring" id="ring"></span>
+      <svg viewBox="0 0 24 24" aria-hidden="true" class="mic-ico"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2Z"/></svg>
+      <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <button class="side-btn" id="insightsBtn" aria-label="Show understanding">◎</button>
+    <div class="mic-hint" id="micHint">Tap to talk</div>
+  </footer>
+
+  <form class="typebar" id="typebar" hidden>
+    <input id="typeInput" autocomplete="off" placeholder="Type your answer…" aria-label="Type your answer">
+    <button type="submit">Send</button>
+  </form>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <div class="setup" id="setup">
+    <div class="setup-card">
+      <h1>Teach it back.</h1>
+      <p class="lede">Explain a concept out loud. Fey asks questions, a stickman acts out exactly what you say, and you find the gaps yourself.</p>
+      <div class="topics" id="topics"></div>
+      <label class="field"><span>Or any topic</span><input id="customTopic" placeholder="e.g. Why the sky is blue" autocomplete="off"></label>
+      <div class="row">
+        <label class="field"><span>Level</span>
+          <select id="level"><option>Primary school</option><option selected>Middle school</option><option>High school</option><option>College</option></select>
+        </label>
+        <label class="field"><span>Language</span>
+          <select id="lang"><option value="en-US">English (US)</option><option value="en-GB">English (UK)</option><option value="en-IN">English (India)</option><option value="en-AU">English (AU)</option></select>
+        </label>
+      </div>
+      <details class="settings">
+        <summary>Voice settings</summary>
+        <label class="field"><span>Tutor voice</span><select id="voiceSel"></select></label>
+        <label class="field"><span>Speaking speed <b id="rateVal">1.0×</b></span><input type="range" id="rate" min="0.8" max="1.3" step="0.05" value="1.02"></label>
+        <label class="field"><span>Wait after I stop talking <b id="silVal">1.3 s</b></span><input type="range" id="silence" min="0.7" max="3" step="0.1" value="1.3"></label>
+        <label class="check"><input type="checkbox" id="bargeIn"> I'm wearing headphones (let me interrupt by talking)</label>
+      </details>
+      <button class="start" id="startBtn">Start talking</button>
+      <p class="status" id="brainStatus">Connecting…</p>
+    </div>
+  </div>
+</div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

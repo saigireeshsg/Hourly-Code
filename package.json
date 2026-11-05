@@ -1,0 +1,24 @@
+{
+  "name": "feynman-voice-tutor",
+  "version": "1.0.0",
+  "description": "Voice-first, mobile-friendly AI tutor that uses the Feynman technique, with live transcription, a stickman that acts out the student's ideas, and live misconception tracking.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "build:standalone": "node scripts/build-standalone.mjs",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saigireeshsg/Hourly-Code.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.5.0"
+  }
+}
